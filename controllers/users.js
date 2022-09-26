@@ -22,12 +22,7 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUserId = (req, res) => {
   User.findById(req.params.id)
-    .then((data) => {
-      if (!data) {
-        return res.status(ERROR_404).send({ message: 'Пользователь по указанному _id не найден.' });
-      }
-      return res.send(data);
-    })
+    .then((data) => res.send(data))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         return res.status(ERROR_404).send({ message: 'Пользователь по указанному _id не найден.' });
