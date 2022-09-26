@@ -38,7 +38,12 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then((data) => res.send(data))
+    .then((data) => {
+      if (!data) {
+        return res.status(ERROR_404).send({ message: 'Карточка с указанным _id не найдена.' });
+      }
+      return res.send(data);
+    })
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         return res.status(ERROR_404).send({ message: 'Карточка с указанным _id не найдена.' });
