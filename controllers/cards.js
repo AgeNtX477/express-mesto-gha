@@ -65,7 +65,7 @@ module.exports.putLike = (req, res) => {
       return res.send(data);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         return res.status(ERROR_400).send({ message: 'Переданы некорректные данные для постановки лайка.' });
       }
       if (err.name === 'DocumentNotFoundError') {
@@ -88,7 +88,7 @@ module.exports.deleteLike = (req, res) => {
       return res.send(data);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         return res.status(ERROR_400).send({ message: 'Переданы некорректные данные для снятия лайка.' });
       }
       if (err.name === 'DocumentNotFoundError') {
