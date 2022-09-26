@@ -38,13 +38,13 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then((data) => {
-      if (!data) {
+    .then((data) => res.send(data))
+    .catch((err) => {
+      if (err.name === 'DocumentNotFoundError') {
         return res.status(ERROR_404).send({ message: 'Карточка с указанным _id не найдена.' });
       }
-      return res.send(data);
-    })
-    .catch((err) => res.status(ERROR_500).send({ message: err.message }));
+      return res.status(ERROR_500).send({ message: err.message });
+    });
 };
 
 module.exports.putLike = (req, res) => {
