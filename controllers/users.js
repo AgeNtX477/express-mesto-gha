@@ -21,12 +21,12 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUserId = (req, res) => {
-  User.findById(req.params.id)
+  User.findById(req.params.userId)
     .then((data) => {
       if (!data) {
-        res.status(ERROR_404).send({ message: 'Пользователь по указанному _id не найден.' });
+        return res.status(ERROR_404).send({ message: 'Пользователь по указанному _id не найден.' });
       }
-      res.send({ data });
+      return res.send(data);
     })
     .catch((err) => res.status(ERROR_500).send({ message: err.message }));
 };
