@@ -22,13 +22,13 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUserId = (req, res) => {
   User.findById(req.params.id)
-    .then((data) => res.send(data))
-    .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
+    .then((data) => {
+      if (!data) {
         return res.status(ERROR_404).send({ message: 'Пользователь по указанному _id не найден.' });
       }
-      return res.status(ERROR_500).send({ message: err.message });
-    });
+      return res.send(data);
+    })
+    .catch((err) => res.status(ERROR_500).send({ message: err.message }));
 };
 
 module.exports.createUser = (req, res) => {
