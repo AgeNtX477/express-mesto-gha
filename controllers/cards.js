@@ -6,18 +6,8 @@ const ERROR_500 = 500;
 
 module.exports.getCards = (req, res) => {
   Card.find({})
-    .then((data) => {
-      if (!data) {
-        return res.status(ERROR_404).send({ message: 'Пользователи не найдены' });
-      }
-      return res.send(data);
-    })
-    .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(ERROR_404).send({ message: 'Пользователи не найдены' });
-      }
-      return res.status(ERROR_500).send({ message: err.message });
-    });
+    .then((data) => res.send(data))
+    .catch((err) => res.status(ERROR_500).send({ message: err.message }));
 };
 
 module.exports.createCard = (req, res) => {
@@ -48,9 +38,6 @@ module.exports.deleteCard = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(ERROR_400).send({ message: 'Переданы некорректные данные для удаления карточки.' });
       }
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(ERROR_404).send({ message: 'Карточка с указанным _id не найдена.' });
-      }
       return res.status(ERROR_500).send({ message: err.message });
     });
 };
@@ -71,9 +58,6 @@ module.exports.putLike = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(ERROR_400).send({ message: 'Переданы некорректные данные для постановки лайка.' });
       }
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(ERROR_404).send({ message: 'Передан несуществующий _id карточки.' });
-      }
       return res.status(ERROR_500).send({ message: err.message });
     });
 };
@@ -93,9 +77,6 @@ module.exports.deleteLike = (req, res) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         return res.status(ERROR_400).send({ message: 'Переданы некорректные данные для снятия лайка.' });
-      }
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(ERROR_404).send({ message: 'Передан несуществующий _id карточки.' });
       }
       return res.status(ERROR_500).send({ message: err.message });
     });
