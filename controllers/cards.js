@@ -1,6 +1,7 @@
 const Card = require('../models/card');
 
 const ERROR_400 = 400;
+const ERROR_403 = 403;
 const ERROR_404 = 404;
 const ERROR_500 = 500;
 
@@ -31,6 +32,9 @@ module.exports.deleteCard = (req, res) => {
     .then((data) => {
       if (!data) {
         return res.status(ERROR_404).send({ message: 'Карточка с указанным _id не найдена.' });
+      }
+      if (!data.owner.equals(req.user._id)) {
+        return res.status(ERROR_403).send({ message: 'Нельзя удалить карточку другого пользователя.' });
       }
       return res.send(data);
     })

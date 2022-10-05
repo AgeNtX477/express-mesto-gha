@@ -1,12 +1,38 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const ERROR_400 = 400;
 const ERROR_404 = 404;
 const ERROR_500 = 500;
 
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      res.send({
+        token: jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' }),
+      });
+    })
+    .catch((err) => {
+      res.status(401).send({ message: err.message });
+    });
+};
+
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((data) => res.send(data))
+    .catch((err) => res.status(ERROR_500).send({ message: err.message }));
+};
+
+module.exports.getCurrentUser = (req, res) => {
+  User.findById(req.user.userId)
+    .then((data) => {
+      if (!data) {
+        return res.status(ERROR_404).send({ message: 'Пользователь по указанному _id не найден.' });
+      }
+      return res.send(data);
+    })
     .catch((err) => res.status(ERROR_500).send({ message: err.message }));
 };
 
@@ -27,13 +53,27 @@ module.exports.getUserId = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({
-    name,
-    about,
-    avatar,
-  })
-    .then((data) => res.send(data))
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+
+  return bcrypt
+    .hash(password, 10)
+    .then((hash) => User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
+    .then((data) => {
+      res.status(201).send({
+        name: data.name,
+        about: data.about,
+        avatar: data.avatar,
+        email: data.email,
+      });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return res.status(ERROR_400).send({ message: 'Переданы некорректные данные при создании пользователя.' });
