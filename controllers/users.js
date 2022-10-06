@@ -25,12 +25,13 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
-  User.find(req.user._id)
+  const { _id } = req.user;
+  User.find({ _id })
     .then((user) => {
       if (!user) {
         throw new NotFoundErr('Пользователь по указанному _id не найден.');
       }
-      return res.status(200).send({ data: user });
+      return res.status(200).send(...user);
     })
     .catch(next);
 };
