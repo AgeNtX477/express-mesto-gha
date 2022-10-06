@@ -31,7 +31,7 @@ module.exports.getCurrentUser = (req, res) => {
       if (!data) {
         return res.status(ERROR_404).send({ message: 'Пользователь по указанному _id не найден.' });
       }
-      return res.send(data);
+      return res.sent(data);
     })
     .catch((err) => res.status(ERROR_500).send({ message: err.message }));
 };
