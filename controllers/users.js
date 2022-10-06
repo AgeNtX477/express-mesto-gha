@@ -44,7 +44,7 @@ module.exports.getUserId = (req, res, next) => {
       return res.send(data);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.kind === 'ObjectId') {
         return next(new BadRequestErr('Переданы не корректные данные.'));
       }
       return next(err);
