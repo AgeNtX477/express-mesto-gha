@@ -51,7 +51,7 @@ app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}...`);
   console.log(`Приложение запущено на ${PORT} порте...`);
 });
-app.use(errors);
+app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
