@@ -41,7 +41,7 @@ module.exports.getUserId = (req, res, next) => {
       if (!data) {
         throw new NotFoundErr('Пользователь по указанному _id не найден.');
       }
-      return res.send(data);
+      return res.status(200).send(data);
     })
     .catch((err) => {
       if (err.kind === 'ObjectId') {
