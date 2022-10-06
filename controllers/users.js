@@ -6,11 +6,13 @@ const UnAuthErr = require('../errors/UnAuthErr');
 const NotFoundErr = require('../errors/NotFoundErr');
 const ConflictErr = require('../errors/ConflictErr');
 
+const { JWB_SECRET = 'super-strong-secret' } = process.env;
+
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, JWB_SECRET, { expiresIn: '7d' });
       res.send({ token });
     })
     .catch(() => next(new UnAuthErr('Некорректный email или пароль.')));
@@ -28,7 +30,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       if (!data) {
         throw new NotFoundErr('Пользователь по указанному _id не найден.');
       }
-      return res.sent(data);
+      return res.send(data);
     })
     .catch(next);
 };
