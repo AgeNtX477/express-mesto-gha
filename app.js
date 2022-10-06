@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { celebrate, Joi } = require('celebrate');
+const { errors, celebrate, Joi } = require('celebrate');
 const cards = require('./routes/cards');
 const users = require('./routes/users');
 const { login, createUser } = require('./controllers/users');
@@ -51,7 +51,7 @@ app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}...`);
   console.log(`Приложение запущено на ${PORT} порте...`);
 });
-
+app.use(errors);
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
