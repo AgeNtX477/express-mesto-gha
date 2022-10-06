@@ -32,11 +32,11 @@ module.exports.getCurrentUser = (req, res, next) => {
       }
       return res.send(data);
     })
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 module.exports.getUserId = (req, res, next) => {
-  User.findById(req.params._id)
+  User.findById(req.params.userId)
     .then((data) => {
       if (!data) {
         throw new NotFoundErr('Пользователь по указанному _id не найден.');
@@ -81,7 +81,8 @@ module.exports.createUser = (req, res, next) => {
         return next(new BadRequestErr('Переданы некорректные данные при создании пользователя.'));
       }
       return next(err);
-    });
+    })
+    .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
