@@ -32,7 +32,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       }
       return res.send(data);
     })
-    .catch(next);
+    .catch((err) => next(err));
 };
 
 module.exports.getUserId = (req, res, next) => {
