@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const UnAuthErr = require('../errors/UnAuthErr');
 
+const { JWB_SECRET = 'super-strong-secret' } = process.env;
+
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
@@ -12,7 +14,7 @@ module.exports = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, 'super-strong-secret');
+    payload = jwt.verify(token, JWB_SECRET);
   } catch (err) {
     next(new UnAuthErr('Необходима авторизация.'));
   }
