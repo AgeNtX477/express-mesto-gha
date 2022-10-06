@@ -25,13 +25,18 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
-  const { _id } = req.user;
-  User.find({ _id })
+  User.find(req.user._id)
     .then((user) => {
       if (!user) {
         throw new NotFoundErr('Пользователь по указанному _id не найден.');
       }
-      return res.status(200).send(...user);
+      return res.status(200).send({ data: user });
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return next(new BadRequestErr('Переданы не корректные данные.'));
+      }
+      return next(err);
     })
     .catch(next);
 };
