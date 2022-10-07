@@ -48,8 +48,7 @@ module.exports.getUserId = (req, res, next) => {
         return next(new BadRequestErr('Переданы не корректные данные.'));
       }
       return next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -82,8 +81,7 @@ module.exports.createUser = (req, res, next) => {
         return next(new BadRequestErr('Переданы некорректные данные при создании пользователя.'));
       }
       return next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -100,8 +98,7 @@ module.exports.updateUser = (req, res, next) => {
         return next(new BadRequestErr('Переданы некорректные данные при обновлении профиля.'));
       }
       return next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -118,6 +115,5 @@ module.exports.updateAvatar = (req, res, next) => {
         return next(new BadRequestErr('Переданы некорректные данные при обновлении аватара.'));
       }
       return next(err);
-    })
-    .catch(next);
+    });
 };

@@ -6,6 +6,7 @@ const cards = require('./routes/cards');
 const users = require('./routes/users');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const NotFoundErr = require('./errors/NotFoundErr');
 
 const { PORT = 3000 } = process.env;
 
@@ -43,8 +44,8 @@ app.post(
 app.use(auth);
 app.use('/', users);
 app.use('/', cards);
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Страница не найдена' });
+app.use('*', (req, res, next) => {
+  next(new NotFoundErr('Страница не найдена'));
 });
 
 app.listen(PORT, () => {
