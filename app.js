@@ -64,8 +64,14 @@ app.listen(PORT, () => {
 const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
+  'https://localhost:3000',
+  'http://localhost:3000',
   'localhost:3000',
+  'https://127.0.0.1:3000',
+  'http://127.0.0.1:3000',
   '127.0.0.1:3000',
+  'https://127.0.0.1:27017',
+  'http://127.0.0.1:27017',
   '127.0.0.1:27017',
 ];
 
