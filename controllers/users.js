@@ -22,7 +22,7 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.status(200).send(users))
+    .then((users) => res.status(200).send({ data: users }))
     .catch(next);
 };
 
@@ -32,7 +32,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundErr('Пользователь по указанному _id не найден.');
       }
-      return res.status(200).send(user);
+      return res.status(200).send({ data: user });
     })
     .catch(next);
 };
@@ -43,7 +43,7 @@ module.exports.getUserId = (req, res, next) => {
       if (!user) {
         throw new NotFoundErr('Пользователь по указанному _id не найден.');
       }
-      return res.status(200).send(user);
+      return res.status(200).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -93,7 +93,7 @@ module.exports.updateUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundErr('Пользователь с указанным _id не найден.');
       }
-      return res.status(200).send(user);
+      return res.status(200).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -110,7 +110,7 @@ module.exports.updateAvatar = (req, res, next) => {
       if (!user) {
         throw new NotFoundErr('Пользователь с указанным _id не найден.');
       }
-      return res.status(200).send(user);
+      return res.status(200).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
