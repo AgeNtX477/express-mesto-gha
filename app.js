@@ -63,7 +63,7 @@ app.listen(PORT, () => {
 });
 
 app.use(cors({
-  origin: 'https://agentx.mesto.nomoredomains.icu',
+  origin: 'https://agentx.mesto.nomoredomains.icu/',
   credentials: true,
 }));
 
