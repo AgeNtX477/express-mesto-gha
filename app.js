@@ -15,7 +15,7 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
@@ -60,46 +60,6 @@ app.use('*', (req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Приложение запущено на ${PORT} порте...`);
-});
-
-app.use(cors({
-  origin: 'https://agentx.mesto.nomoredomains.icu/',
-  credentials: true,
-}));
-
-const allowedCors = [
-  'https://praktikum.tk/',
-  'http://praktikum.tk/',
-  'https://localhost:3000/',
-  'http://localhost:3000/',
-  'localhost:3000',
-  'https://127.0.0.1:3000/',
-  'http://127.0.0.1:3000/',
-  '127.0.0.1:3000',
-  'https://127.0.0.1:27017/',
-  'http://127.0.0.1:27017/',
-  '127.0.0.1:27017',
-];
-
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  next();
-});
-
-// eslint-disable-next-line consistent-return
-app.use((req, res, next) => {
-  const { method } = req;
-  const requestHeaders = req.headers['access-control-request-headers'];
-  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-    return res.end();
-  }
-  next();
 });
 
 app.use(errorLogger);
