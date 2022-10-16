@@ -5,7 +5,7 @@ const ForbiddenErr = require('../errors/ForbiddenErr');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.status(200).send({ data: cards }))
+    .then((cards) => res.status(200).send(cards))
     .catch(next);
 };
 
@@ -34,7 +34,7 @@ module.exports.deleteCard = (req, res, next) => {
       if (!card.owner.equals(req.user._id)) {
         return next(new ForbiddenErr('Нельзя удалить карточку другого пользователя.'));
       }
-      return card.remove().then(() => res.send({ data: card }));
+      return card.remove().then(() => res.send(card));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
