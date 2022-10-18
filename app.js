@@ -82,5 +82,3 @@ app.use((err, req, res, next) => {
 process.on('uncaughtException', (err, origin) => {
   console.log(`${origin} ${err.name} c текстом ${err.message} не была обработана. Обратите внимание!`);
 });
-
-throw new Error('Ошибка, которую мы пропустили');
